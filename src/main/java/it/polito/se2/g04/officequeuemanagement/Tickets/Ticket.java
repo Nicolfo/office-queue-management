@@ -25,9 +25,9 @@ public class Ticket {
         this.served_timestamp = served_timestamp;
     }
 
-    @OneToOne
+    @ManyToOne
     private Service service;
-    @OneToOne
+    @ManyToOne
     @Nullable
     private Counter counter;
     @Nullable
