@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.Duration;
 import java.util.UUID;
 
 @Entity
@@ -13,4 +14,5 @@ public class Service {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String name;
+    private Duration serviceTime;
 }
