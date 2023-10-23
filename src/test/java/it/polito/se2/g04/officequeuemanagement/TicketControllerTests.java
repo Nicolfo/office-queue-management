@@ -7,10 +7,12 @@ import it.polito.se2.g04.officequeuemanagement.Tickets.TicketRepository;
 
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,6 +34,8 @@ import java.util.List;
 @AutoConfigureMockMvc
 @Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class TicketControllerTests {
     @Autowired
     private MockMvc mockMvc;
@@ -48,10 +52,6 @@ public class TicketControllerTests {
         defaultService=new Service("first service", Duration.ofSeconds(10));
         serviceRepository.save(defaultService);
     }
-    @AfterAll
-    public void cleanup(){
-        serviceRepository.deleteById(defaultService.getId());
-    }
 
 
     @Test
@@ -65,6 +65,12 @@ public class TicketControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.estimated_time").exists());
+        mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/createTicket/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+        mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/createTicket/a")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 }
 
