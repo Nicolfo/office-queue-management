@@ -21,7 +21,7 @@ public class TicketController {
         this.serviceService = serviceService;
     }
 
-    @GetMapping("/API/tickets/createTicket/{serviceID}")
+    @PostMapping("/API/tickets/createTicket/{serviceID}")
     @ResponseStatus(HttpStatus.CREATED)
     public TicketDTO getTicket(@PathVariable UUID serviceID){
         Service service = serviceService.getServiceById(serviceID);
