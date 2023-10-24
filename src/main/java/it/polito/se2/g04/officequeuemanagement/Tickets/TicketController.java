@@ -33,4 +33,8 @@ public class TicketController {
     public TicketDTO getTicketWithNoPathVariable(){
         throw new CreateTicketWithNoPathVariable("Cant create a ticket without a correct path variable (it must be a UUID)");
     };
+    @GetMapping("/API/tickets/serveNextTicket/{counterID}")
+    public Long serveNextTicket(){
+        return null;
+    }
 }
