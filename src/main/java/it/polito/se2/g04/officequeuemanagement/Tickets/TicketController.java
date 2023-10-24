@@ -21,10 +21,16 @@ public class TicketController {
         this.serviceService = serviceService;
     }
 
-    @GetMapping("/API/tickets/createTicket/{serviceID}")
+    @PostMapping("/API/tickets/createTicket/{serviceID}")
     @ResponseStatus(HttpStatus.CREATED)
     public TicketDTO getTicket(@PathVariable UUID serviceID){
         Service service = serviceService.getServiceById(serviceID);
         return ticketService.createTicket(service);
     }
+
+    @PostMapping("/API/tickets/createTicket/")
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public TicketDTO getTicketWithNoPathVariable(){
+        throw new CreateTicketWithNoPathVariable("Cant create a ticket without a correct path variable (it must be a UUID)");
+    };
 }

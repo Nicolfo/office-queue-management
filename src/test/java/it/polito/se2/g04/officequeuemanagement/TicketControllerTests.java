@@ -2,8 +2,6 @@ package it.polito.se2.g04.officequeuemanagement;
 
 import it.polito.se2.g04.officequeuemanagement.Services.Service;
 import it.polito.se2.g04.officequeuemanagement.Services.ServiceRepository;
-import it.polito.se2.g04.officequeuemanagement.Tickets.Ticket;
-import it.polito.se2.g04.officequeuemanagement.Tickets.TicketRepository;
 
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,21 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.UUID;
 
 
 @SpringBootTest
@@ -39,8 +29,6 @@ import java.util.List;
 public class TicketControllerTests {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private TicketRepository ticketRepository;
     @Autowired
     private ServiceRepository serviceRepository;
     private Service defaultService;
@@ -60,17 +48,20 @@ public class TicketControllerTests {
         //Test API Call
 
         //Test API Call
-        mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/createTicket/{id}",defaultService.getId())
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/{id}",defaultService.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.estimated_time").exists());
-        mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/createTicket/")
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
-        mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/createTicket/a")
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/a")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/"+ UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }
 
