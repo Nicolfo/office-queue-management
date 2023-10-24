@@ -13,6 +13,11 @@ function SideBar(props){
                             Get Ticket
                         </button>
                     </li>
+                    <li className="nav-item">
+                        <button className={path==='/Who-is-served' ? "nav-link active link-light text-start":"nav-link link-dark text-start"} onClick={()=>{navigate('/Who-is-served')}} >
+                        Who is served
+                        </button>
+                    </li>
                     {/*props.loggedIn && props.user.role==="Manager" ?
                         <li className="nav-item">
                             <button className={path==='/stats' ? "nav-link active link-light text-start":"nav-link link-dark text-start"}  onClick={()=>{navigate('/stats')}}>

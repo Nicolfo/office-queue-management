@@ -28,6 +28,8 @@ function NavBar(props) {
                         <Nav.Link >Group 04</Nav.Link>
                         <NavDropdown title="Members" id="basic-nav-dropdown">
                             <NavDropdown.Item >Nicolò Fontana S303361</NavDropdown.Item>
+                            <NavDropdown.Item >Giuseppe Poma S317996</NavDropdown.Item>
+
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>
