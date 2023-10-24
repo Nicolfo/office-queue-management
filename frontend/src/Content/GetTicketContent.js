@@ -1,4 +1,4 @@
-import { Button, Card, ToggleButton } from "react-bootstrap";
+import { Alert, Button, Card, ToggleButton } from "react-bootstrap";
 import API from "../API/API";
 import { useState, useEffect } from "react";
 
@@ -7,18 +7,27 @@ function GetTicketContent() {
     const [serviceList, setServiceList] = useState([]);
     const [selectedService, setSelectedService] = useState(null);
     const [ticket, setTicket] = useState(null);
+    const [error, setError] = useState(null);
 
     // Get all available services
     const loadServices = async () => {
-        const services = await API.getAllServices();
-        setServiceList(services);
-        setSelectedService(services[0]);
+        try {
+            const services = await API.getAllServices();
+            setServiceList(services);
+            setSelectedService(services[0]);
+        } catch (error) {
+            setError(error);
+        }
     }
 
     // Generate ticket
     const generateTicket = async (service) => {
-        const ticket = await API.createTicket(service.id);
-        setTicket(ticket);
+        try {
+            const ticket = await API.createTicket(service.id);
+            setTicket(ticket);
+        } catch (error) {
+            setError(error);
+        }
     }
 
     // Convert duration from java string to normal text
@@ -62,6 +71,7 @@ function GetTicketContent() {
 
     return (
         <div>
+            { error ? <Alert variant="danger" dismissible onClose={() => setError(null)}>{error.message}</Alert> : <></> }
             <Card className="mb-2">
                 <Card.Header><b>Select service</b></Card.Header>
                 <Card.Body>
