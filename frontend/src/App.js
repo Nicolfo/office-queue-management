@@ -4,13 +4,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import {BrowserRouter as Router, useLocation} from "react-router-dom";
 import SideBar from "./Sidebar/SideBar";
 import NavBar from "./NavBar/NavBar";
+import GetTicketContent from './Content/GetTicketContent';
 
 
 function Content() {
     const path = useLocation().pathname.toString();
     switch (path) {                                //add to this switch-case your content (defined in the Content folder)
         case "/get-ticket":
-            return <>Content goes here</>
+            return <GetTicketContent/>
         default:
             return <h1>Path not found</h1>
     }
