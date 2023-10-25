@@ -6,6 +6,7 @@ import it.polito.se2.g04.officequeuemanagement.Services.ServiceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -39,6 +40,12 @@ public class TicketController {
     public Long serveNextTicket(@PathVariable UUID counterID){
         //return 1l;
         return ticketService.callNextCustomer(counterService.getCounterById(counterID));
+    }
+
+    @GetMapping("/API/tickets/ticketsServing")
+    public List<TicketDTO2> getServingTickets(){
+        //return a list of TicketDTO2, containing for each counter the last ticket served
+        return ticketService.ticketsServing();
     }
 
 

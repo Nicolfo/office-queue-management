@@ -52,4 +52,10 @@ public class TicketServiceImpl implements TicketService {
         throw new EmptyQueueException("The queue is empty");
     }
 
+    @Override
+    public List<TicketDTO2> ticketsServing() {
+        //return a list of TicketDTO2, containing for each counter the last ticket served
+        return ticketRepository.getServingTickets().stream().map(it->new TicketDTO2(it.getId(),it.getCounter().getId())).toList();
+    }
+
 }

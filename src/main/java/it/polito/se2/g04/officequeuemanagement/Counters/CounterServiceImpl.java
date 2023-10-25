@@ -4,6 +4,7 @@ import it.polito.se2.g04.officequeuemanagement.Services.ServiceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import java.util.List;
 
 @Service
 public class CounterServiceImpl implements CounterService{
@@ -19,5 +20,10 @@ public class CounterServiceImpl implements CounterService{
             return counterRepository.getReferenceById(id);
         else
             throw new CounterNotFoundException("Cannot find a counter with this id");
+    }
+
+    @Override
+    public List<CounterDTO> getAvailableCounters() {
+        return counterRepository.findAll().stream().map(it->new CounterDTO(it.getId(),it.getName())).toList();
     }
 }
