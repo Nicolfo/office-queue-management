@@ -8,25 +8,12 @@ import NextClient from "./NextClient/NextClient";
 import {useState, useEffect} from "react";
 
 
-function Content() {
-    const [counters, setCounters] = useState(["Counter 1", "Counter 2", "Counter 3"]);
-    const [nextTicket, setNextTicket] = useState([1, 2, 5, 6]);
-    const [refreshTicket, setRefreshTicket] = useState(true);
-    
-    useEffect( ()=>{
-        // to run only once
-        // api retrive the counters available
-        // start the polling to refresh the next ticket id
-        const refresh = setInterval(() =>{setRefreshTicket((refreshTicket)=> !refreshTicket)},3000)
+function Content(props) {
 
-    }, []);
-    useEffect( ()=>{
-        //api get next ticket from db
-        //API.getServingTicketsId()
-        //.then((list)=> { setNextTicket(list);})
-        setNextTicket((nextTicket) => nextTicket.map((ticket)=>{return ticket +1 }));
 
-    }, [refreshTicket]);
+
+
+
 
 
     const path = useLocation().pathname.toString();
@@ -35,7 +22,7 @@ function Content() {
             return <>Content goes here</>
 
         case "/Who-is-served":
-            return <NextClient counters = {counters} tickets = {nextTicket}></NextClient>
+            return <NextClient counters = {props.counters} tickets = {props.nextTicket}  nextTicket={props.nextTicket} setNextTicket={props.setNextTicket}></NextClient>
 
         default:
             return <h1>Path not found</h1>
@@ -44,6 +31,35 @@ function Content() {
 
 function App() {
 
+    const [counters, setCounters] = useState(["Counter 1", "Counter 2", "Counter 3"]);
+    const [nextTicket, setNextTicket] = useState([1, 2, 5, 6]);
+
+    const [refreshTicket, setRefreshTicket] = useState(0);
+
+    const fnRefreshTicket = () => {
+        setRefreshTicket((refreshTicket) => refreshTicket +1);
+    }
+    
+
+    useEffect( ()=>{
+        // to run only once
+        // api retrive the counters available
+        //API.getAvailableCounters()
+        //.then((counters) => setCounters(counters))
+
+        // start the polling to refresh the next ticket id
+        
+         setInterval(() => fnRefreshTicket(), 2000);
+
+    },[]);
+
+    useEffect( ()=>{
+        //api get next ticket from db
+        //API.getServingTicketsId()
+        //.then((list)=> { setNeyxtTicket(list);})
+        setNextTicket((nextTicket) => nextTicket.map((ticket)=>{return ticket +1 }) );
+
+    }, [refreshTicket]);
 
     return (
         <div className="container-fluid" style={{height: '90vh'}}>
@@ -54,7 +70,7 @@ function App() {
                     <SideBar>
                     </SideBar>
                     <div className="col-9">
-                        <Content>
+                        <Content counters= {counters} setCounters={setCounters} nextTicket = {nextTicket} setNextTicket = {setNextTicket} >
                         </Content>
                     </div>
                 </Router>

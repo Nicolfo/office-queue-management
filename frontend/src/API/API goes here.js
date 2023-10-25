@@ -31,5 +31,9 @@ function getJson(httpResponsePromise) {
 
 
   async function getServingTicketsId() {
-    return getJson( fetch(URL + '/getServingTicketsId'));
+    return getJson( fetch(URL + '/tickets/ticketsServing'));
   };
+
+    async function getAvailableCounters() {
+      return getJson( fetch(URL + '/counters/countersAvailable'));
+    };

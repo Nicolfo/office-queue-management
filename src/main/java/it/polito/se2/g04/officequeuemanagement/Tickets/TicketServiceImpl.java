@@ -28,4 +28,11 @@ public class TicketServiceImpl implements TicketService {
         return list.get(0).getId();
     }
 
+    @Override
+    public Long ticketsServing() {
+        //prendere il ticket della coda più lunga
+        List<Long> list=ticketRepository.getServingTickets();
+        return list;
+    }
+
 }

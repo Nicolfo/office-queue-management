@@ -37,4 +37,11 @@ public class TicketController {
     public Long serveNextTicket(){
         return null;
     }
+
+    @GetMapping("/API/tickets/ticketsServing")
+    public Long getServingTickets(){
+        return TicketService.ticketsServing();
+    }
+
+
 }
