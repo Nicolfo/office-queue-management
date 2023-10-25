@@ -15,6 +15,9 @@ public class CounterServiceImpl implements CounterService{
     }
 
     public Counter getCounterById(UUID id){
-        return counterRepository.getReferenceById(id);
+        if(counterRepository.existsById(id))
+            return counterRepository.getReferenceById(id);
+        else
+            throw new CounterNotFoundException("Cannot find a counter with this id");
     }
 }

@@ -11,6 +11,6 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
             "JOIN service s ON t.service_id = s.id " +
             "WHERE t.counter_id IS NULL " +
             "GROUP BY s.id, s.service_time " +
-            "ORDER BY number_of_ticket,service_time DESC ", nativeQuery = true)
+            "ORDER BY number_of_ticket DESC ,service_time ASC ", nativeQuery = true)
     public List<Object[]> getQueues();
 }

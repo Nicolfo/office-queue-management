@@ -37,6 +37,9 @@ public class TicketController {
     };
     @GetMapping("/API/tickets/serveNextTicket/{counterID}")
     public Long serveNextTicket(@PathVariable UUID counterID){
+        //return 1l;
         return ticketService.callNextCustomer(counterService.getCounterById(counterID));
     }
+
+
 }

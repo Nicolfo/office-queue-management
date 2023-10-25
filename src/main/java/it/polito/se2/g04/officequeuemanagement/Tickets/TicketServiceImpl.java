@@ -3,6 +3,7 @@ package it.polito.se2.g04.officequeuemanagement.Tickets;
 import it.polito.se2.g04.officequeuemanagement.Counters.Counter;
 import org.springframework.stereotype.Service;
 
+import java.nio.ByteBuffer;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
@@ -30,9 +31,16 @@ public class TicketServiceImpl implements TicketService {
         List<Object[]> list=ticketRepository.getQueues();
         for(Object[] elem : list){
             List<it.polito.se2.g04.officequeuemanagement.Services.Service> list1=counter.getAssociated_services();
+            ByteBuffer buffer = ByteBuffer.wrap((byte[]) elem[0]);
+
+            // Create a UUID from the ByteBuffer
+            long mostSignificantBits = buffer.getLong();
+            long leastSignificantBits = buffer.getLong();
+            UUID uuid = new UUID(mostSignificantBits, leastSignificantBits);
+
 
             for (it.polito.se2.g04.officequeuemanagement.Services.Service service : list1) {
-                if (service.getId().equals((UUID) elem[0])) {
+                if (service.getId().compareTo(uuid)==0) {
                     Ticket toManage=ticketRepository.getReferenceById((Long) elem[2]);
                     toManage.setCounter(counter);
                     toManage.setServed_timestamp(new Timestamp(System.currentTimeMillis()));
