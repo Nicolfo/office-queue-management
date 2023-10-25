@@ -63,5 +63,60 @@ public class TicketControllerTests {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
+<<<<<<< Updated upstream
+=======
+
+    @Test
+    @Rollback
+    public void testGetNextTicket() throws Exception {
+        //POPULATE COUNTER / SERVICES
+        //ADDED A SECOND SERVICE
+        Service service2 = new Service("second service", Duration.ofSeconds(5));
+        //COUNTER 1 ADDED
+        Counter test_counter = new Counter("Counter1", List.of(defaultService,service2));
+        serviceRepository.save(service2);
+        counterRepository.save(test_counter);
+        //CREATE 2 TICKET FOR SERVICE 1 AND 1 TICKET FOR SERVICE 2
+        MvcResult res=mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/{id}",defaultService.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/{id}",defaultService.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+        MvcResult res2=mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/{id}",service2.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn();
+        
+        //PARSE RESULTS
+        JSONObject jsonResponse = new JSONObject(res.getResponse().getContentAsString());
+        Long id_1 = jsonResponse.getLong("id");
+        JSONObject jsonResponse2 = new JSONObject(res2.getResponse().getContentAsString());
+        Long id_2 = jsonResponse2.getLong("id");
+        System.out.println("/API/tickets/serveNextTicket/"+test_counter.getId().toString());
+
+        //Test API Call
+        mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/serveNextTicket/"+test_counter.getId().toString())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.ticket_id").value(id_1));;
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/serveNextTicket/{counterId}",test_counter.getId().toString())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.ticket_id").value(id_2));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/serveNextTicket/a")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/serveNextTicket/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+        mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/serveNextTicket/"+ UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
+    }
+>>>>>>> Stashed changes
 }
 

@@ -33,4 +33,20 @@ public class TicketController {
     public TicketDTO getTicketWithNoPathVariable(){
         throw new CreateTicketWithNoPathVariable("Cant create a ticket without a correct path variable (it must be a UUID)");
     };
+<<<<<<< Updated upstream
+=======
+    @GetMapping("/API/tickets/serveNextTicket/{counterID}")
+    public TicketDTO3 serveNextTicket(@PathVariable UUID counterID){
+        //return 1l;
+        return ticketService.callNextCustomer(counterService.getCounterById(counterID));
+    }
+
+    @GetMapping("/API/tickets/ticketsServing")
+    public List<TicketDTO2> getServingTickets(){
+        //return a list of TicketDTO2, containing for each counter the last ticket served
+        return ticketService.ticketsServing();
+    }
+
+
+>>>>>>> Stashed changes
 }
