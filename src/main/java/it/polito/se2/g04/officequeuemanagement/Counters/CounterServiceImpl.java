@@ -14,8 +14,7 @@ public class CounterServiceImpl implements CounterService {
 
 
     @Override
-    public List<String> getAvailableCounters() {
-        List<String> list = counterRepository.findAll().stream().map(it->it.getName()).toList();
-        return list;
+    public List<CounterDTO> getAvailableCounters() {
+        return counterRepository.findAll().stream().map(it->new CounterDTO(it.getId(),it.getName())).toList();
     }
 }

@@ -9,12 +9,15 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
 
 
-    @Query(value="SELECT id "+
-    "FROM ticket "+
-    "WHERE counter_id IS NOT NULL "+
-    "GROUP BY counter_id, id, served_timestamp "+
-    "ORDER BY served_timestamp DESC",nativeQuery = true)
-    public List<Long> getServingTickets();
+    @Query(value = "SELECT t1.id, t1.counter_id, t1.served_timestamp, t1.service_id " +
+            "FROM Ticket t1 " +
+            "WHERE t1.counter_id IS NOT NULL " +
+            "AND t1.served_timestamp = (" +
+            "    SELECT MAX(t2.served_timestamp) " +
+            "    FROM Ticket t2 " +
+            "    WHERE t2.counter_id = t1.counter_id " +
+            ")",nativeQuery = true)
+    public List<Ticket> getServingTickets();
 
 
 }

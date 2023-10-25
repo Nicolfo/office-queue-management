@@ -40,7 +40,8 @@ public class TicketController {
     }
 
     @GetMapping("/API/tickets/ticketsServing")
-    public List<Long> getServingTickets(){
+    public List<TicketDTO2> getServingTickets(){
+        //return a list of TicketDTO2, containing for each counter the last ticket served
         return ticketService.ticketsServing();
     }
 

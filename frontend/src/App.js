@@ -31,8 +31,8 @@ function Content(props) {
 
 function App() {
 
-    const [counters, setCounters] = useState(["Counter 1", "Counter 2", "Counter 3"]);
-    const [nextTicket, setNextTicket] = useState([1, 2, 5, 6]);
+    const [counters, setCounters] = useState([]);
+    const [nextTicket, setNextTicket] = useState([]);
 
     const [refreshTicket, setRefreshTicket] = useState(0);
 
@@ -46,7 +46,7 @@ function App() {
         // api retrive the counters available
         getAvailableCounters()
         .then((counters) => setCounters(counters))
-
+        console.log(counters);
         // start the polling to refresh the next ticket id
         
          setInterval(() => fnRefreshTicket(), 2000);
@@ -57,6 +57,7 @@ function App() {
         //api get next ticket from db
         getServingTicketsId()
         .then((list)=> { setNextTicket(list);})
+        console.log(nextTicket)
         //setNextTicket((nextTicket) => nextTicket.map((ticket)=>{return ticket +1 }) );
 
     }, [refreshTicket]);

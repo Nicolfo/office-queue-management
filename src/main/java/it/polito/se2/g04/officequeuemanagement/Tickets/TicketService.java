@@ -7,5 +7,5 @@ import java.util.List;
 public interface TicketService {
     TicketDTO createTicket(Service service);
     Long callNextCustomer(Counter counter);
-    List<Long> ticketsServing();
+    List<TicketDTO2> ticketsServing();
 }

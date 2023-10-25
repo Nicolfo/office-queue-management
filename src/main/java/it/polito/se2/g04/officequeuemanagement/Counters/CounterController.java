@@ -19,7 +19,7 @@ public class CounterController {
 
 
     @GetMapping("/API/counters/countersAvailable")
-    public List<String> getAvailableCounters(){
+    public List<CounterDTO> getAvailableCounters(){
         return counterService.getAvailableCounters();
     }
 
