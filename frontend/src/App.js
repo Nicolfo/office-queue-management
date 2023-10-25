@@ -6,6 +6,7 @@ import SideBar from "./Sidebar/SideBar";
 import NavBar from "./NavBar/NavBar";
 import NextClient from "./NextClient/NextClient";
 import {useState, useEffect} from "react";
+import GetTicketContent from './Content/GetTicketContent';
 
 
 function Content() {
@@ -32,7 +33,8 @@ function Content() {
     const path = useLocation().pathname.toString();
     switch (path) {                                //add to this switch-case your content (defined in the Content folder)
         case "/get-ticket":
-            return <>Content goes here</>
+
+            return <GetTicketContent/>
 
         case "/Who-is-served":
             return <NextClient counters = {counters} tickets = {nextTicket}></NextClient>
