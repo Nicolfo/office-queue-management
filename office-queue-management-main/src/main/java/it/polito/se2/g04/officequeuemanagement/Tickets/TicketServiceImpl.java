@@ -36,9 +36,11 @@ public class TicketServiceImpl implements TicketService {
                 t=queue.get(0);
             }
         }
+        if(lenght==0)
+            throw new EmptyQueueException("Queue Empty");
+
         t.setCounter(counter);
         t.setServed_timestamp(new Timestamp(System.currentTimeMillis()));
         return t;
     }
-
 }

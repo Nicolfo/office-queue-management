@@ -26,6 +26,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 
 @SpringBootTest
@@ -60,11 +61,37 @@ public class TicketControllerTests {
         //Test API Call
 
         //Test API Call
-        mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/createTicket/{id}",defaultService.getId())
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/{id}",defaultService.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.estimated_time").exists());
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/a")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/"+ UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+    @Test
+    @Rollback
+    public void testGetNextTicketfromQueue() throws Exception{
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/getNextTicketfromQueue/{counter}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.service").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.counter").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.served_timestamp").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.counter").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.served_timestamp").isNotEmpty());
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/getNextTicketfromQueue/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
     }
 }
 
