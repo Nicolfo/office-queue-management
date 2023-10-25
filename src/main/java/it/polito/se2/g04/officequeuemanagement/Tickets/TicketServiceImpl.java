@@ -2,12 +2,11 @@ package it.polito.se2.g04.officequeuemanagement.Tickets;
 
 import it.polito.se2.g04.officequeuemanagement.Counters.Counter;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.ls.LSInput;
 
 import java.sql.Timestamp;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -24,24 +23,24 @@ public class TicketServiceImpl implements TicketService {
         return new TicketDTO(toAdd.getId(), Duration.ofSeconds(10));  //add formula for estimated time
     }
 
-    @Override
-    public Long callNextCustomer(Counter counter) {
-        //prendere il ticket della coda più lunga
-        List<Object[]> list=ticketRepository.getQueues();
-        for(Object[] elem : list){
-            List<it.polito.se2.g04.officequeuemanagement.Services.Service> list1=counter.getAssociated_services();
 
-            for (it.polito.se2.g04.officequeuemanagement.Services.Service service : list1) {
-                if (service.getId().equals((UUID) elem[0])) {
-                    Ticket toManage=ticketRepository.getReferenceById((Long) elem[2]);
-                    toManage.setCounter(counter);
-                    toManage.setServed_timestamp(new Timestamp(System.currentTimeMillis()));
-                    ticketRepository.save(toManage);
-                    return toManage.getId();
-                }
+    @Override
+    public Ticket getNextTicketfromQueue(Counter counter){
+        List<it.polito.se2.g04.officequeuemanagement.Services.Service> services=counter.getAssociated_services();
+        int lenght=0;
+        Ticket t=null;
+        for(it.polito.se2.g04.officequeuemanagement.Services.Service s: services){
+            List<Ticket> queue= ticketRepository.findTicketByServiceAndCounterEmptyOrderById(s);
+            if(queue.size()>lenght){
+                lenght=queue.size();
+                t=queue.get(0);
             }
         }
-        throw new EmptyQueueException("The queue is empty");
-    }
+        if(lenght==0)
+            throw new EmptyQueueException("Queue Empty");
 
+        t.setCounter(counter);
+        t.setServed_timestamp(new Timestamp(System.currentTimeMillis()));
+        return t;
+    }
 }

@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 
-
 @Entity
 @Getter
 @Setter
@@ -34,6 +33,5 @@ public class Ticket {
     private Counter counter;
     @Nullable
     private Timestamp served_timestamp;
-
 
 }

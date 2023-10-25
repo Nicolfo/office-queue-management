@@ -8,8 +8,6 @@ public class OfficeQueueManagementApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(OfficeQueueManagementApplication.class, args);
-
-        //api dall'esteno handler
     }
 
 }

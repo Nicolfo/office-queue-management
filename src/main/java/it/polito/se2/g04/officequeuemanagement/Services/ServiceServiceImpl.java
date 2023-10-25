@@ -1,6 +1,5 @@
 package it.polito.se2.g04.officequeuemanagement.Services;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +15,7 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public it.polito.se2.g04.officequeuemanagement.Services.Service getServiceById(UUID id) {
-        if(serviceRepository.existsById(id))
-            return serviceRepository.getReferenceById(id);
-        else
-            throw new ServiceNotFoundException("Cannot find service with id "+ id);
-
-
+        return serviceRepository.getReferenceById(id);
     }
 
     @Override

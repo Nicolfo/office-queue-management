@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +13,6 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @Getter
-@EqualsAndHashCode
 public class Service {
     public Service( String name, Duration serviceTime) {
         this.name = name;
