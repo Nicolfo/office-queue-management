@@ -52,13 +52,13 @@ function GetTicketContent() {
         
         valStr = "";
         if (ss >= 0) {
-            valStr = `${ss} seconds`;
+            valStr = `${ss} second(s)`;
         }
         if (mm >= 0) {
-            valStr = `${mm} minutes, ` + valStr;
+            valStr = `${mm} minute(s), ` + valStr;
         }
         if (hh >= 0) {
-            valStr = `${hh} hours, ` + valStr;
+            valStr = `${hh} hour(s), ` + valStr;
         }
 
         return valStr;
