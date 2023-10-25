@@ -20,8 +20,6 @@ public class ServiceServiceImpl implements ServiceService {
             return serviceRepository.getReferenceById(id);
         else
             throw new ServiceNotFoundException("Cannot find service with id "+ id);
-
-
     }
 
     @Override

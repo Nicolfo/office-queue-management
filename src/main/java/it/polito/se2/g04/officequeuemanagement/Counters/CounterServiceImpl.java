@@ -1,6 +1,5 @@
 package it.polito.se2.g04.officequeuemanagement.Counters;
 
-import it.polito.se2.g04.officequeuemanagement.Services.ServiceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -24,6 +23,8 @@ public class CounterServiceImpl implements CounterService{
 
     @Override
     public List<CounterDTO> getAvailableCounters() {
-        return counterRepository.findAll().stream().map(it->new CounterDTO(it.getId(),it.getName())).toList();
+        return counterRepository.findAll().stream()
+                .map(it->new CounterDTO(it.getId(),it.getName(), it.getAssociated_services()))
+                .toList();
     }
 }

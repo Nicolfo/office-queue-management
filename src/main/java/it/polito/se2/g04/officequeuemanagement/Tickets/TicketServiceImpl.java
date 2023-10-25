@@ -1,18 +1,28 @@
 package it.polito.se2.g04.officequeuemanagement.Tickets;
 
 import it.polito.se2.g04.officequeuemanagement.Counters.Counter;
+import it.polito.se2.g04.officequeuemanagement.Counters.CounterDTO;
+import it.polito.se2.g04.officequeuemanagement.Counters.CounterService;
+import it.polito.se2.g04.officequeuemanagement.Services.ServiceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.ByteBuffer;
 import java.sql.Timestamp;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+import java.util.Collection;
 
 @Service
 public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
+
+    @Autowired
+    private ServiceService serviceService;
+
+    @Autowired
+    private CounterService counterService;
 
     public TicketServiceImpl(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
@@ -21,8 +31,33 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public TicketDTO createTicket(it.polito.se2.g04.officequeuemanagement.Services.Service service) {
         Ticket toAdd = new Ticket(service, null, null);
+        Duration estimatedTime = getEstimatedTime(service);
         ticketRepository.save(toAdd);
-        return new TicketDTO(toAdd.getId(), Duration.ofSeconds(10));  //add formula for estimated time
+        return new TicketDTO(toAdd.getId(), estimatedTime);
+    }
+
+    // Returns the currently estimated time for a specified service, in seconds
+    private Duration getEstimatedTime(it.polito.se2.g04.officequeuemanagement.Services.Service service) {
+        // Find all tickets not served yet for the service
+        Collection<Ticket> tickets = ticketRepository.findAll();
+        List<Ticket> waitingTickets = tickets.stream()
+                .filter(t -> t.getService().equals(service))
+                .filter(t -> t.getServed_timestamp() == null)
+                .toList();
+        Double nR = (double) waitingTickets.size();
+        // Get the denominator
+        Double sR = 0.0;
+        // For each counter, check if it offers this service
+        // If yes, add 1/#services to sR
+        Collection<CounterDTO> counters = counterService.getAvailableCounters();
+        for (CounterDTO counter : counters) {
+            if (counter.getAssociatedServices().contains(service)) {
+                sR += 1.0 / ((double) counter.getAssociatedServices().size());
+            }
+        }
+        double time = (double) service.getServiceTime().getSeconds() * (0.5 + nR / sR);
+        int seconds = (int) Math.round(time);
+        return Duration.ofSeconds(seconds);
     }
 
     @Override
