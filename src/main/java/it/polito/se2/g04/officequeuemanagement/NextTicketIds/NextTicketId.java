@@ -1,4 +1,4 @@
-public class NextTicketId{
+/*public class NextTicketId{
 
     public static Long getNetxTicketId(Counter counter) {
         
@@ -41,4 +41,4 @@ public class NextTicketId{
         
     }
 
-}
+}*/

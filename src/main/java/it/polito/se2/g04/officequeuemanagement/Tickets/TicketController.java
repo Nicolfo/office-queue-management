@@ -6,6 +6,7 @@ import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -39,8 +40,8 @@ public class TicketController {
     }
 
     @GetMapping("/API/tickets/ticketsServing")
-    public Long getServingTickets(){
-        return TicketService.ticketsServing();
+    public List<Long> getServingTickets(){
+        return ticketService.ticketsServing();
     }
 
 

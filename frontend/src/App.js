@@ -6,7 +6,7 @@ import SideBar from "./Sidebar/SideBar";
 import NavBar from "./NavBar/NavBar";
 import NextClient from "./NextClient/NextClient";
 import {useState, useEffect} from "react";
-
+import { getServingTicketsId, getAvailableCounters } from "./API/API-Polling"
 
 function Content(props) {
 
@@ -44,8 +44,8 @@ function App() {
     useEffect( ()=>{
         // to run only once
         // api retrive the counters available
-        //API.getAvailableCounters()
-        //.then((counters) => setCounters(counters))
+        getAvailableCounters()
+        .then((counters) => setCounters(counters))
 
         // start the polling to refresh the next ticket id
         
@@ -55,9 +55,9 @@ function App() {
 
     useEffect( ()=>{
         //api get next ticket from db
-        //API.getServingTicketsId()
-        //.then((list)=> { setNeyxtTicket(list);})
-        setNextTicket((nextTicket) => nextTicket.map((ticket)=>{return ticket +1 }) );
+        getServingTicketsId()
+        .then((list)=> { setNextTicket(list);})
+        //setNextTicket((nextTicket) => nextTicket.map((ticket)=>{return ticket +1 }) );
 
     }, [refreshTicket]);
 

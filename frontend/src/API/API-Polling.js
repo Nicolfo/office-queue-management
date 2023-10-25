@@ -1,4 +1,4 @@
-const URL = 'http://localhost:3001/api';
+const URL = 'http://localhost:8080';
 
 
 
@@ -30,10 +30,10 @@ function getJson(httpResponsePromise) {
   }
 
 
-  async function getServingTicketsId() {
+  export async function getServingTicketsId() {
     return getJson( fetch(URL + '/tickets/ticketsServing'));
   };
 
-    async function getAvailableCounters() {
-      return getJson( fetch(URL + '/counters/countersAvailable'));
+    export async function getAvailableCounters() {
+      return getJson( fetch(URL + '/API/counters/countersAvailable'));
     };

@@ -1,6 +1,7 @@
-package it.polito.se2.g04.officequeuemanagement.Tickets;
-import it.polito.se2.g04.officequeuemanagement.Tickets.Ticket;
-import it.polito.se2.g04.officequeuemanagement.Services.Service;
+package it.polito.se2.g04.officequeuemanagement.Counters;
+
+import java.util.List;
+
 public interface CounterService {
-    ArrayList<String> getAvailableCounters();
+   public List<String> getAvailableCounters();
 }

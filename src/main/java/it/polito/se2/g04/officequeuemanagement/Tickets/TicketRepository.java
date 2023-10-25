@@ -6,17 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket,Long> {
-    @Query("SELECT t FROM Ticket t")
-    public List<Ticket> getServingTicket();
 
-    
-    @Query("SELECT DISTINCT ON (name) id 
-    FROM ticket 
-    WHERE counter IS NOT NULL
-    GROUP BY counter, id, timestamp
-    ORDER BY served_timestamp DESC"
-    )
 
+
+    @Query(value="SELECT id "+
+    "FROM ticket "+
+    "WHERE counter_id IS NOT NULL "+
+    "GROUP BY counter_id, id, served_timestamp "+
+    "ORDER BY served_timestamp DESC",nativeQuery = true)
     public List<Long> getServingTickets();
 
 
