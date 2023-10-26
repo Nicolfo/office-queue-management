@@ -15,6 +15,10 @@ public class TicketException {
     public ProblemDetail handleEmptyQueueException(EmptyQueueException e){
         return ProblemDetail.forStatusAndDetail(HttpStatus.NO_CONTENT,e.getMessage());
     }
+    @ExceptionHandler(NoCounterForServiceException.class)
+    public ProblemDetail handleNoCounterForService(NoCounterForServiceException e){
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,e.getMessage());
+    }
 }
 class CreateTicketWithNoPathVariable extends RuntimeException {
     public CreateTicketWithNoPathVariable(String message) {
@@ -27,3 +31,8 @@ class EmptyQueueException extends RuntimeException {
     }
 }
 
+class NoCounterForServiceException extends RuntimeException {
+    public NoCounterForServiceException(String message) {
+        super(message);
+    }
+}

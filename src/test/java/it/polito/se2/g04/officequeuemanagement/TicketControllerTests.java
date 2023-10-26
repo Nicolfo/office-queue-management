@@ -41,14 +41,17 @@ public class TicketControllerTests {
     @Autowired
     private CounterRepository counterRepository;
     private Service defaultService;
+    private Counter defaultCounter;
 
     // You can still mock your service if needed
 
     @BeforeAll
     public void setup() {
         defaultService=new Service("first service", Duration.ofSeconds(10));
-        serviceRepository.save(defaultService);
+        defaultCounter = new Counter("first counter", List.of(defaultService));
 
+        serviceRepository.save(defaultService);
+        counterRepository.save(defaultCounter);
     }
 
 
@@ -125,6 +128,43 @@ public class TicketControllerTests {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
 
+    }
+
+    @Test
+    @Rollback
+    public void testWaitingTime() throws Exception {
+        Service s1 = new Service("S1", Duration.ofSeconds(60));
+        Service s2 = new Service("S2", Duration.ofSeconds(120));
+        Counter c1 = new Counter("C1", List.of(s1, s2));
+        Counter c2 = new Counter("C2", List.of(s1));
+        serviceRepository.saveAll(List.of(s1, s2));
+        counterRepository.saveAll(List.of(c1, c2));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/{id}",s1.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.estimated_time").value(Duration.ofSeconds(30).toString()));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/{id}",s1.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.estimated_time").value(Duration.ofSeconds(70).toString()));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/{id}",s2.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.estimated_time").value(Duration.ofSeconds(60).toString()));
+    }
+
+    @Test
+    @Rollback
+    public void testWaitingTimeWithNoCounter() throws Exception {
+        Service s1 = new Service("S1", Duration.ofSeconds(60));
+        serviceRepository.save(s1);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/API/tickets/createTicket/{id}",s1.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }
 

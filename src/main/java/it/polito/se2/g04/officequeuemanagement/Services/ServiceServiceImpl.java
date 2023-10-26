@@ -16,12 +16,10 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public it.polito.se2.g04.officequeuemanagement.Services.Service getServiceById(UUID id) {
-        if(serviceRepository.existsById(id))
-            return serviceRepository.getReferenceById(id);
+        if (serviceRepository.existsById(id))
+            return serviceRepository.findById(id).orElse(null);
         else
             throw new ServiceNotFoundException("Cannot find service with id "+ id);
-
-
     }
 
     @Override
