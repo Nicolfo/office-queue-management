@@ -7,15 +7,11 @@ import NavBar from "./NavBar/NavBar";
 import NextClient from "./NextClient/NextClient";
 import {useState, useEffect} from "react";
 import GetTicketContent from './Content/GetTicketContent';
+import Officer from "./Content/Officer";
 import { getServingTicketsId, getAvailableCounters } from "./API/API-Polling"
 
+
 function Content(props) {
-
-
-
-
-
-
 
     const path = useLocation().pathname.toString();
     switch (path) {                                //add to this switch-case your content (defined in the Content folder)
@@ -26,6 +22,9 @@ function Content(props) {
         case "/Who-is-served":
             return <NextClient counters = {props.counters} tickets = {props.nextTicket}  nextTicket={props.nextTicket} setNextTicket={props.setNextTicket}></NextClient>
 
+        case "/officer":
+            return <Officer counters={props.counters} customer={props.customer} setCustomer={props.setCustomer} />
+
         default:
             return <h1>Path not found</h1>
     }
@@ -35,6 +34,7 @@ function App() {
 
     const [counters, setCounters] = useState([]);
     const [nextTicket, setNextTicket] = useState([]);
+    const [customer, setCustomer] = useState(null);
 
     const [refreshTicket, setRefreshTicket] = useState(0);
 
@@ -45,7 +45,7 @@ function App() {
 
     useEffect( ()=>{
         // to run only once
-        // api retrive the counters available
+        // api retrieve the counters available
         getAvailableCounters()
         .then((counters) => setCounters(counters))
         console.log(counters);
@@ -73,7 +73,7 @@ function App() {
                     <SideBar>
                     </SideBar>
                     <div className="col-9">
-                        <Content counters= {counters} setCounters={setCounters} nextTicket = {nextTicket} setNextTicket = {setNextTicket} >
+                        <Content counters= {counters} setCounters={setCounters} nextTicket = {nextTicket} setNextTicket = {setNextTicket} customer={customer} setCustomer={setCustomer} >
                         </Content>
                     </div>
                 </Router>

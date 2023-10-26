@@ -26,17 +26,15 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Long callNextCustomer(Counter counter) {
+    public TicketDTO3 callNextCustomer(Counter counter) {
         //prendere il ticket della coda più lunga
         List<Object[]> list=ticketRepository.getQueues();
         for(Object[] elem : list){
             List<it.polito.se2.g04.officequeuemanagement.Services.Service> list1=counter.getAssociated_services();
-            ByteBuffer buffer = ByteBuffer.wrap((byte[]) elem[0]);
-
-            // Create a UUID from the ByteBuffer
-            long mostSignificantBits = buffer.getLong();
-            long leastSignificantBits = buffer.getLong();
-            UUID uuid = new UUID(mostSignificantBits, leastSignificantBits);
+            UUID uuid = (UUID) elem[0];
+            ByteBuffer buffer = ByteBuffer.wrap(new byte[16]);
+            buffer.putLong(uuid.getMostSignificantBits());
+            buffer.putLong(uuid.getLeastSignificantBits());
 
 
             for (it.polito.se2.g04.officequeuemanagement.Services.Service service : list1) {
@@ -45,7 +43,7 @@ public class TicketServiceImpl implements TicketService {
                     toManage.setCounter(counter);
                     toManage.setServed_timestamp(new Timestamp(System.currentTimeMillis()));
                     ticketRepository.save(toManage);
-                    return toManage.getId();
+                    return new TicketDTO3(toManage.getId(), toManage.getService().getName());
                 }
             }
         }
