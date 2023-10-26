@@ -9,17 +9,17 @@ function SideBar(props){
             <aside>
                 <ul className="nav nav-pills flex-column mb-auto nav-fill ">
                     <li className="nav-item">
-                        <button className={path==='/get-ticket' ? "nav-link active link-light text-start":"nav-link link-dark text-start"} onClick={()=>{navigate('/get-ticket')}} >
+                        <button className={path==='/get-ticket' ? "nav-link active link-light text-start":"nav-link link-dark text-start"} onClick={()=>{navigate('/get-ticket'); props.setservingView(false)}} >
                             Get Ticket
                         </button>
                     </li>
                     <li className="nav-item">
-                        <button className={path==='/Who-is-served' ? "nav-link active link-light text-start":"nav-link link-dark text-start"} onClick={()=>{navigate('/Who-is-served')}} >
+                        <button className={path==='/Who-is-served' ? "nav-link active link-light text-start":"nav-link link-dark text-start"} onClick={()=>{navigate('/Who-is-served'); props.setservingView(true)}} >
                         Who is served
                         </button>
                     </li>
                     <li className="nav-item">
-                        <button className={path==='/officer' ? "nav-link active link-light text-start":"nav-link link-dark text-start"} onClick={()=>{navigate('/officer')}} >
+                        <button className={path==='/officer' ? "nav-link active link-light text-start":"nav-link link-dark text-start"} onClick={()=>{navigate('/officer'); props.setservingView(false)}} >
                             Officer
                         </button>
                     </li>

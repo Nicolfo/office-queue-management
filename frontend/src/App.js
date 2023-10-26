@@ -37,6 +37,7 @@ function App() {
     const [selectCounter, setSelectCounter] = useState(true);
     const [selectedCounter, setSelectedCounter] = useState(null);
     const [refreshTicket, setRefreshTicket] = useState(0);
+    const [servingView, setServingView] = useState(false);
 
     const fnRefreshTicket = () => {
         setRefreshTicket((refreshTicket) => refreshTicket + 1);
@@ -62,11 +63,12 @@ function App() {
 
     useEffect( ()=>{
         //api get next ticket from db
+        if(servingView) {
         getServingTicketsId()
         .then((list)=> { setNextTicket(list);})
         console.log(nextTicket)
         //setNextTicket((nextTicket) => nextTicket.map((ticket)=>{return ticket +1 }) );
-
+        }
     }, [refreshTicket]);
 
     return (
@@ -75,7 +77,7 @@ function App() {
                 <Router>
                     <NavBar>
                     </NavBar>
-                    <SideBar>
+                    <SideBar setservingView={setServingView}>
                     </SideBar>
                     <div className="col-9">
                         <Content counters= {counters} setCounters={setCounters} nextTicket = {nextTicket} setNextTicket = {setNextTicket}
