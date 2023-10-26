@@ -5,12 +5,14 @@ import it.polito.se2.g04.officequeuemanagement.Services.Service;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
 
 @Entity
 @Getter
+@Setter
 public class Ticket {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
@@ -18,6 +20,10 @@ public class Ticket {
 
     public Ticket() {
 
+    }
+
+    public Ticket(Service service) {
+        this.service = service;
     }
     public Ticket(Service service, Counter counter, Timestamp served_timestamp) {
         this.service = service;
