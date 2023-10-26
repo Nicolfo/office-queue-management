@@ -108,12 +108,12 @@ public class TicketControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/serveNextTicket/"+test_counter.getId().toString())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").value(id_1));;
+                .andExpect(MockMvcResultMatchers.jsonPath("$.ticket_id").value(id_1));;
 
         mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/serveNextTicket/{counterId}",test_counter.getId().toString())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").value(id_2));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.ticket_id").value(id_2));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/serveNextTicket/a")
                         .contentType(MediaType.APPLICATION_JSON))
