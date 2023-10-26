@@ -33,7 +33,7 @@ function App() {
 
     const [counters, setCounters] = useState([]);
     const [nextTicket, setNextTicket] = useState([]);
-    const [customer, setCustomer] = useState(null);
+    const [customer, setCustomer] = useState("...");
     const [selectCounter, setSelectCounter] = useState(true);
     const [selectedCounter, setSelectedCounter] = useState(null);
     const [refreshTicket, setRefreshTicket] = useState(0);

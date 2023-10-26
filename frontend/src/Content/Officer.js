@@ -13,7 +13,7 @@ function CounterButton(props) {
             key={counter.id}
             id={`radio-${counter.id}`}
             type="radio"
-            variant="primary"
+            variant="secondary"
             className="p-3 m-2"
             checked={selectedCounter.id === counter.id}
             onClick={() => { setSelectedCounter(counter) } }>
@@ -39,7 +39,7 @@ function CounterSelection(props) {
 }
 
 function CounterManagement(props) {
-    const { callNextCustomer, customer, selectedCounter } = props;
+    const { callNextCustomer, customer, selectedCounter, setSelectCounter, setCustomer } = props;
 
     return(
         <div className="officer-container">
@@ -56,6 +56,11 @@ function CounterManagement(props) {
                     </Button>
                 </Card.Body>
             </Card>
+            <div>
+                <Button variant="danger" style={{"marginTop": "0.5rem"}} onClick={() => {setSelectCounter(true); setCustomer("...")} }>
+                    Change counter
+                </Button>
+            </div>
         </div>
     )
 }
@@ -71,7 +76,7 @@ function Officer(props) {
 
     const callNextCustomer = () => {
         API.callNextCustomer(selectedCounter.id)
-            .then((ticket) => setCustomer(`${ticket.ticket_id}${ticket.service_name}`))
+            .then((ticket) => setCustomer(`${ticket.ticket_id} for the service ${ticket.service_name}`))
             .catch((err) => setError(err))
     }
 
@@ -79,7 +84,7 @@ function Officer(props) {
         selectCounter ?
             <CounterSelection setSelectCounter={setSelectCounter} counters={counters} selectedCounter={selectedCounter} setSelectedCounter={setSelectedCounter} />
                 :
-            <CounterManagement selectedCounter={selectedCounter} customer={customer} callNextCustomer={callNextCustomer} />
+            <CounterManagement selectedCounter={selectedCounter} setSelectCounter={setSelectCounter} customer={customer} setCustomer={setCustomer} callNextCustomer={callNextCustomer} />
     )
 }
 
