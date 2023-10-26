@@ -21,6 +21,10 @@ public class Ticket {
     public Ticket() {
 
     }
+
+    public Ticket(Service service) {
+        this.service = service;
+    }
     public Ticket(Service service, Counter counter, Timestamp served_timestamp) {
         this.service = service;
         this.counter = counter;
