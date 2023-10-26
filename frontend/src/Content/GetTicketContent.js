@@ -78,7 +78,7 @@ function GetTicketContent() {
                     {serviceList.map(service => <ServiceButton service={service} selectedService={selectedService} setSelectedService={setSelectedService}/>)}
                 </Card.Body>
             </Card>
-            <Button variant="primary" onClick={() => generateTicket(selectedService)}>Get ticket</Button>
+            <Button variant="primary" style={{"marginLeft": "31.5rem"}} onClick={() => generateTicket(selectedService)}>Get ticket</Button>
             {ticket ?
             <Card className="mb-2">
                 <Card.Body>
