@@ -55,6 +55,10 @@ public class TicketServiceImpl implements TicketService {
                 sR += 1.0 / ((double) counter.getAssociatedServices().size());
             }
         }
+        // If there are no counters that offer that service, throw an exception
+        if (sR == 0.0) {
+            throw new NoCounterForServiceException("No counter is available for the requested service.");
+        }
         double time = (double) service.getServiceTime().getSeconds() * (0.5 + nR / sR);
         int seconds = (int) Math.round(time);
         return Duration.ofSeconds(seconds);
