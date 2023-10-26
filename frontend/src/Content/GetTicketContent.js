@@ -80,9 +80,9 @@ function GetTicketContent() {
             </Card>
             <Button variant="primary" style={{"marginLeft": "31.5rem"}} onClick={() => generateTicket(selectedService)}>Get ticket</Button>
             {ticket ?
-            <Card className="mb-2">
+            <Card className="mb-2 mt-2">
                 <Card.Body>
-                    Ticket #{ticket.id}, estimated waiting time: {getStringForDuration(ticket.estimated_time)}
+                    <b>Ticket #{ticket.id}</b>, estimated waiting time: {getStringForDuration(ticket.estimated_time)}
                 </Card.Body>
             </Card>
             : <></>}

@@ -76,7 +76,7 @@ function Officer(props) {
 
     const callNextCustomer = () => {
         API.callNextCustomer(selectedCounter.id)
-            .then((ticket) => setCustomer(`${ticket.ticket_id} for the service ${ticket.service_name}`))
+            .then((ticket) => setCustomer(`Ticket #${ticket.ticket_id} for the service ${ticket.service_name}`))
             .catch((err) => setError(err))
     }
 
