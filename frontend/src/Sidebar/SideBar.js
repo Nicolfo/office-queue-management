@@ -18,6 +18,11 @@ function SideBar(props){
                         Who is served
                         </button>
                     </li>
+                    <li className="nav-item">
+                        <button className={path==='/officer' ? "nav-link active link-light text-start":"nav-link link-dark text-start"} onClick={()=>{navigate('/officer')}} >
+                            Officer
+                        </button>
+                    </li>
                     {/*props.loggedIn && props.user.role==="Manager" ?
                         <li className="nav-item">
                             <button className={path==='/stats' ? "nav-link active link-light text-start":"nav-link link-dark text-start"}  onClick={()=>{navigate('/stats')}}>

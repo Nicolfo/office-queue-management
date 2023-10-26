@@ -4,10 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.Duration;
+import java.util.UUID;
+
 @Getter
 @AllArgsConstructor
-public class TicketDTO {
-    private Long id;
-    private Duration estimated_time;
-
+public class TicketDTO3{
+    private Long ticket_id;
+    private String service_name;
 }
