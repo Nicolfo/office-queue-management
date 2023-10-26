@@ -16,14 +16,13 @@ function Content(props) {
     const path = useLocation().pathname.toString();
     switch (path) {                                //add to this switch-case your content (defined in the Content folder)
         case "/get-ticket":
-
             return <GetTicketContent/>
 
         case "/Who-is-served":
             return <NextClient counters = {props.counters} tickets = {props.nextTicket}  nextTicket={props.nextTicket} setNextTicket={props.setNextTicket}></NextClient>
 
         case "/officer":
-            return <Officer counters={props.counters} customer={props.customer} setCustomer={props.setCustomer} />
+            return <Officer counters={props.counters} customer={props.customer} setCustomer={props.setCustomer} selectCounter={props.selectCounter} setSelectCounter={props.setSelectCounter} selectedCounter={props.selectedCounter} setSelectedCounter={props.setSelectedCounter} />
 
         default:
             return <h1>Path not found</h1>
@@ -35,23 +34,29 @@ function App() {
     const [counters, setCounters] = useState([]);
     const [nextTicket, setNextTicket] = useState([]);
     const [customer, setCustomer] = useState(null);
-
+    const [selectCounter, setSelectCounter] = useState(true);
+    const [selectedCounter, setSelectedCounter] = useState(null);
     const [refreshTicket, setRefreshTicket] = useState(0);
 
     const fnRefreshTicket = () => {
-        setRefreshTicket((refreshTicket) => refreshTicket +1);
+        setRefreshTicket((refreshTicket) => refreshTicket + 1);
     }
-    
 
     useEffect( ()=>{
-        // to run only once
-        // api retrieve the counters available
-        getAvailableCounters()
-        .then((counters) => setCounters(counters))
-        console.log(counters);
-        // start the polling to refresh the next ticket id
-        
-         setInterval(() => fnRefreshTicket(), 2000);
+        const fetchData = async () => {
+            try {
+                // Fetch the counters
+                const countersData = await getAvailableCounters();
+                setCounters(countersData);
+                setSelectedCounter(countersData[0]);
+            } catch (error) {
+                // Handle any errors here
+                console.error(error);
+            }
+        };
+        fetchData();
+
+        setInterval(() => fnRefreshTicket(), 2000);
 
     },[]);
 
@@ -73,7 +78,9 @@ function App() {
                     <SideBar>
                     </SideBar>
                     <div className="col-9">
-                        <Content counters= {counters} setCounters={setCounters} nextTicket = {nextTicket} setNextTicket = {setNextTicket} customer={customer} setCustomer={setCustomer} >
+                        <Content counters= {counters} setCounters={setCounters} nextTicket = {nextTicket} setNextTicket = {setNextTicket}
+                                 customer={customer} setCustomer={setCustomer} selectCounter={selectCounter} setSelectCounter={setSelectCounter}
+                                 selectedCounter={selectedCounter} setSelectedCounter={setSelectedCounter} >
                         </Content>
                     </div>
                 </Router>

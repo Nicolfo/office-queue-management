@@ -1,44 +1,86 @@
 import { useState } from 'react'
-import { Button, Card, ListGroup } from 'react-bootstrap';
+import {Button, Card, ToggleButton} from 'react-bootstrap';
 import './Officer.css'
 import '../API/API-Polling.js'
 import API from "../API/API.js";
 
 
-function Officer(props) {
-    const { counters, customer, setCustomer } = props;
-    const [error, setError] = useState(null);
-
-
-    const callNextCustomer = () => {
-        API.callNextCustomer(counters[0].id)
-            .then((ticket) => setCustomer(`${ticket.ticket_id}${ticket.service_name}`))
-            .catch((err) => setError(err))
-    }
-
+function CounterButton(props) {
+    const { counter, selectedCounter, setSelectedCounter } = props;
 
     return (
+        <ToggleButton
+            key={counter.id}
+            id={`radio-${counter.id}`}
+            type="radio"
+            variant="primary"
+            className="p-3 m-2"
+            checked={selectedCounter.id === counter.id}
+            onClick={() => { setSelectedCounter(counter) } }>
+            {counter.name}
+        </ToggleButton>
+    )
+}
+
+function CounterSelection(props) {
+    const { setSelectCounter, counters, selectedCounter, setSelectedCounter } = props;
+
+    return (
+        <div>
+            <Card className="mb-2">
+                <Card.Header> <b> Select counter </b> </Card.Header>
+                <Card.Body>
+                    {counters.map(counter => <CounterButton counter={counter} selectedCounter={selectedCounter} setSelectedCounter={setSelectedCounter} />) }
+                </Card.Body>
+            </Card>
+            <Button variant="primary" onClick={() => setSelectCounter(false)}> Confirm </Button>
+        </div>
+    )
+}
+
+function CounterManagement(props) {
+    const { callNextCustomer, customer, selectedCounter } = props;
+
+    return(
         <div className="officer-container">
             <div className="header">
-                <h1> {counters[0].name} </h1>
+                <h1> {selectedCounter.name} </h1>
             </div>
             <Card>
                 <Card.Body>
                     <Card.Title>
                         The next customer to be served is: {customer}
                     </Card.Title>
-                    <Button variant="primary" style={{"marginTop": "0.5rem"}} onClick={() => callNextCustomer()} >
+                    <Button variant="primary" style={{"marginTop": "0.5rem"}} onClick={() => callNextCustomer()}>
                         Call next customer
                     </Button>
-                    {/* <ListGroup style={{"marginTop": "1.5rem"}}>
-                      //  <ListGroup.Item>
-                        //    You are currently serving customer...
-                       // </ListGroup.Item>
-                    </ListGroup> */}
                 </Card.Body>
             </Card>
         </div>
-    );
+    )
+}
+
+
+
+
+
+function Officer(props) {
+    const { counters, customer, setCustomer, selectCounter, setSelectCounter, selectedCounter, setSelectedCounter } = props;
+    const [error, setError] = useState(null);
+
+
+    const callNextCustomer = () => {
+        API.callNextCustomer(selectedCounter.id)
+            .then((ticket) => setCustomer(`${ticket.ticket_id}${ticket.service_name}`))
+            .catch((err) => setError(err))
+    }
+
+    return (
+        selectCounter ?
+            <CounterSelection setSelectCounter={setSelectCounter} counters={counters} selectedCounter={selectedCounter} setSelectedCounter={setSelectedCounter} />
+                :
+            <CounterManagement selectedCounter={selectedCounter} customer={customer} callNextCustomer={callNextCustomer} />
+    )
 }
 
 export default Officer;
