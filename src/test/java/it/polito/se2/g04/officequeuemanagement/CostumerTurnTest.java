@@ -12,15 +12,13 @@ import it.polito.se2.g04.officequeuemanagement.Services.ServiceRepository;
 import it.polito.se2.g04.officequeuemanagement.Tickets.Ticket;
 import it.polito.se2.g04.officequeuemanagement.Tickets.TicketRepository;
 import org.json.JSONArray;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -101,10 +99,19 @@ public class CostumerTurnTest {
         counter3.setAssociated_services(servicesCounter);
         counterRepository.save(counter3);
     }
+    @AfterAll
+    public void CleanUo(){
+        ticketRepository.deleteAll();
+        counterRepository.deleteAll();
+        serviceRepository.deleteAll();
+    }
+
+
 
 
     @Test
     @DisplayName("Should get 0 tickets")
+    @Rollback
     public void getAllServingTicketsEmpty() throws Exception {
         MvcResult res = mockMvc.perform(MockMvcRequestBuilders.get("/API/tickets/ticketsServing")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -119,6 +126,7 @@ public class CostumerTurnTest {
     }
 
     @Test
+    @Rollback
     @DisplayName("Should get correct amount of tickets tickets, with correct service types")
     public void getAllServingTicketsNotEmpty() throws Exception {
 
