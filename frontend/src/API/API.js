@@ -24,9 +24,21 @@ const createTicket = async (serviceId) => {
     throw json;
 }
 
-const API = { 
+async function callNextCustomer(counterID) {
+    const response = await fetch(`${SERVER_URL}/API/tickets/serveNextTicket/${counterID}`);
+    const ticket = await response.json();
+    if (response.ok) {
+        return ticket;
+    } else {
+        throw ticket;
+    }
+}
+
+
+const API = {
     getAllServices,
-    createTicket
+    createTicket,
+    callNextCustomer
 };
 
 export default API;
