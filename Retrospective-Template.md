@@ -16,7 +16,7 @@ sections:
 4/4
 - Total points committed vs. done 
 - Nr of hours planned vs. spent (as a team)
-56h 50m / 56h
+56h planned 56h 50m spent
 
 **Remember**a story is done ONLY if it fits the Definition of Done:
  
@@ -29,10 +29,14 @@ sections:
 
 ### Detailed statistics
 
-| Story  | # Tasks | Points | Hours est. | Hours actual |
-|--------|---------|--------|------------|--------------|
-| _#0_   |         |        |            |              |
-| n      |         |        |            |              |
+| Story                   | # Tasks | Points | Hours est. | Hours actual |
+|-------------------------|---------|--------|------------|--------------|
+| _#0_                    | 7       |        | 30h        | 26h20m       |
+| Get Ticket              | 3       |        | 10h        | 9h           |
+| Call customer           | 2       |        | 5h         | 9h           |
+| Customer turn           | 2       |        | 6h         | 8h           |
+| Waiting time estimation | 1       |        | 2h         | 2h           |
+
    
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
@@ -61,7 +65,7 @@ sections:
 
 - What caused your errors in estimation (if any)?
 
-The estimation we did on the development task was not so far from the actual time spent, but we didn't consider too much the problems that could have occurred during the learning of spring-boot (cause the most of us didn't know how to use it). 
+The estimation we did on the development tasks was not so far from the actual time spent, but we didn't consider too much the problems that could have occurred during the learning of spring-boot (cause the most of us didn't know how to use it). 
 
 - What lessons did you learn (both positive and negative) in this sprint?
 Positive: 
@@ -74,10 +78,14 @@ Negative:
 2) Sometimes there is the need to adapt your solution to other's work 
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
+We didn't have a previous retrospective
   
 - Which ones you were not able to achieve? Why?
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
+
+We will have a daily (or at least every two/three days) scrum to coordinate better the work between team members
+
 
   > Propose one or two
 
