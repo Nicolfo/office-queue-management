@@ -44,19 +44,24 @@ Our Definition of Done:
   
 ## QUALITY MEASURES 
 
-- Unit Testing:
-  - Total hours estimated
-  - Total hours spent
-  - Nr of automated unit test cases 
-  - Coverage (if available)
-- E2E testing:
-  - Total hours estimated
-  - Total hours spent
-- Code review 
-  - Total hours estimated 
-  - Total hours spent
-  
+- We included the time dedicated to unit testing, E2E testing and code review in the time estimation for each task. To provide an amount of time spent on testing, we will use the following measures:
+  - 10% of the time of each task is dedicated to **unit testing**
+  - 5% of the time of each task is dedicated to **E2E testing**
+  - 5% of the time of each task is dedicated to **code review**
+  - An exception was made for 1 task, which was specifically dedicated to E2E testing
 
+
+- Unit Testing:
+  - Total hours estimated: **5.4h**
+  - Total hours spent: **5.3h**
+  - Nr of automated unit test cases: **7**
+  - Coverage (if available): **91% of all methods, 93% of lines of code**
+- E2E testing:
+  - Total hours estimated: **4.7h**
+  - Total hours spent: **4.64h**
+- Code review 
+  - Total hours estimated: **2.7h**
+  - Total hours spent: **2.64h**
 
 ## ASSESSMENT
 
