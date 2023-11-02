@@ -85,6 +85,8 @@ See previous answer
 
 We will have a daily (or at least every two/three days) scrum to coordinate better the work between team members
 
+We will divide the task to create a component form the task to test it, in order to have a better look on how we spent the time 
+
 - One thing you are proud of as a Team!!
 
 Our team showed coesion between team members and each one of us was ready to help someone with less experience
