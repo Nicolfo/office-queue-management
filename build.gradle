@@ -42,11 +42,13 @@ test {
 }
 jacoco {
     toolVersion = "0.8.9"
-    reportsDirectory = layout.projectDirectory.dir("/report-aggregate/target/site/jacoco-aggregate/")
+    reportsDirectory = layout.projectDirectory.dir("/coverage-xmls")
 }
 
 jacocoTestReport {
     reports {
         xml.required = true
+        html.required = false
+        csv.required = false
     }
 }
