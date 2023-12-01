@@ -36,3 +36,11 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+subprojects {
+    sonar {
+        properties {
+            property "sonar.sources", "/frontend/src"
+        }
+    }
+}
