@@ -40,7 +40,7 @@ tasks.named('test') {
 subprojects {
     sonar {
         properties {
-            property "sonar.sources", "/frontend/src"
+            property "sonar.sources", "./frontend/src"
         }
     }
 }
